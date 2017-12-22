@@ -1,27 +1,30 @@
+
 console.log('Starting app');
 
 //requires
 const fs = require('fs');
 const os = require('os');
 const _ = require('lodash');
-
+const yargs = require('yargs');
 const notes = require('./notes.js');
 
-command = process.argv[2];
+const argv = yargs.argv;
+var command = process.argv[2];
+
 
 if(command === 'read')
 {
-    console.log('reading file');
+    notes.readFile(argv.title);
 }else if(command === 'list')
 {
-    console.log('Listing all notes');
+    notes.getAll();
 }else if(command === 'delete')
 {
-    console.log('Deleting a note');
+    notes.removeFile(argv.title);
 }
 else if(command === 'add')
 {
-    console.log('adding a note');
+    notes.addNote(argv.title, argv.body);
 } else
 {
     console.log('Command not found');
