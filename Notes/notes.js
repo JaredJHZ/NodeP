@@ -2,13 +2,16 @@ console.log('Starting notes.js');
 const fs = require('fs');
 
 addNote = (title,body) =>{
-    var note = '\n'+ title + '\n' + body;
-    fs.appendFile('notes.txt',note, (error)=>{
-        if(error)
-        {
-            console.log(error);
-        }
-    })
+    var note = {
+        "title":title,
+        "body": body
+    };
+    var allNotes =[];
+    allNotes.push(fs.readFileSync("notes.JSON"));
+    allNotes.push(note);
+    fs.writeFileSync("notes.JSON",JSON.stringify(allNotes));
+    
+    
 };
 
 getAll = ()=>{
@@ -22,7 +25,13 @@ getAll = ()=>{
 };
 
 readFile = (title) =>{
-    console.log('reading file',title);
+    var note = JSON.parse(fs.readFileSync("notes.JSON"));
+    note.forEach(element => {
+        console.log(element.title);
+        if(element.title === title){
+            console.log(element.title+" "+element.body)
+        }
+    });
 }
 
 removeFile = (title) =>{
