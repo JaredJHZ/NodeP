@@ -7,8 +7,15 @@ addNote = (title,body) =>{
         "body": body
     };
     var allNotes =[];
-    allNotes.push(fs.readFileSync("notes.JSON"));
+    
+    var noteS = fs.readFileSync("notes.JSON");
+    
+    allNotes = JSON.parse(noteS);
+
     allNotes.push(note);
+
+    console.log(allNotes);
+
     fs.writeFileSync("notes.JSON",JSON.stringify(allNotes));
     
     
@@ -16,26 +23,45 @@ addNote = (title,body) =>{
 
 getAll = ()=>{
     console.log('Listing all notes');
-    fs.readFile('notes.txt',(err,data)=>{
-        if(err || !data){
-            console.log('error');
-        }
-        console.log(data.toString());
-    })
+    var allNotes = JSON.parse(fs.readFileSync('notes.JSON'));
+    var i = 1;
+    allNotes.forEach(element => {
+        console.log('Nota:'+i);
+        i++;
+        console.log(element.title+'\n');
+        console.log(element.body+'\n');
+        console.log('\n');
+    });
+
 };
 
 readFile = (title) =>{
     var note = JSON.parse(fs.readFileSync("notes.JSON"));
     note.forEach(element => {
-        console.log(element.title);
         if(element.title === title){
-            console.log(element.title+" "+element.body)
+            console.log(element.title+":"+element.body)
         }
     });
 }
 
 removeFile = (title) =>{
-    console.log('removing file',title);
+    var note = [];
+    var n = {
+        title:"", 
+        body: ""
+    };
+    note = JSON.parse(fs.readFileSync("notes.JSON"));
+    note.forEach(element =>{
+        if(element.title === title)
+        {
+            n.title = element.title;
+            n.body = element.body;      
+        }
+    });
+    note.pop(n);
+    
+    fs.writeFileSync("notes.JSON",JSON.stringify(note));
+    
 }
 
 
