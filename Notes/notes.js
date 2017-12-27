@@ -2,21 +2,33 @@ console.log('Starting notes.js');
 const fs = require('fs');
 
 addNote = (title,body) =>{
+    
     var note = {
-        "title":title,
-        "body": body
+        "title":title.toUpperCase(),
+        "body": body.toUpperCase()
     };
+    
+    
     var allNotes =[];
-    
+    try{
     var noteS = fs.readFileSync("notes.JSON");
-    
     allNotes = JSON.parse(noteS);
-
-    allNotes.push(note);
-
-    console.log(allNotes);
-
+    var duplicated = allNotes.filter((note)=> note.title === title.toUpperCase());
+    if(duplicated.length === 0){
+        allNotes.push(note);
+        }
+        else
+         {
+              console.log("Title duplicated, please change the title of your note");
+        
+         }
     fs.writeFileSync("notes.JSON",JSON.stringify(allNotes));
+    }catch(e)
+    {
+        allNotes.push(note);
+        fs.writeFileSync("notes.JSON",JSON.stringify(allNotes));
+    }
+    
     
     
 };
@@ -38,7 +50,7 @@ getAll = ()=>{
 readFile = (title) =>{
     var note = JSON.parse(fs.readFileSync("notes.JSON"));
     note.forEach(element => {
-        if(element.title === title){
+        if(element.title === title.toUpperCase()){
             console.log(element.title+":"+element.body)
         }
     });
@@ -52,7 +64,7 @@ removeFile = (title) =>{
     };
     note = JSON.parse(fs.readFileSync("notes.JSON"));
     note.forEach(element =>{
-        if(element.title === title)
+        if(element.title === title.toUpperCase())
         {
             n.title = element.title;
             n.body = element.body;      
@@ -65,8 +77,4 @@ removeFile = (title) =>{
 }
 
 
-sum = (a,b) => {
-    return a+b;
-};
-
-module.exports = {addNote,sum,getAll,readFile,removeFile};
+module.exports = {addNote,getAll,readFile,removeFile};
