@@ -24,7 +24,14 @@ if(command === 'read')
 }
 else if(command === 'add')
 {
-    notes.addNote(argv.title, argv.body);
+   var note = notes.addNote(argv.title, argv.body);
+   if(!note)
+   {
+       console.log("error");
+   }else{
+       console.log("Note Title: "+note.title);
+       console.log("Note body: "+note.body);
+   }
 } else
 {
     console.log('Command not found');
