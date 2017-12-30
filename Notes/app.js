@@ -8,13 +8,37 @@ const _ = require('lodash');
 const yargs = require('yargs');
 const notes = require('./notes.js');
 
-const argv = yargs.argv;
+const argv = yargs
+.command("add","adding a new note",{
+    title: {
+        describe : "The tittle of the note",
+        demand: true,
+        alias : "t"
+    },
+    body : {
+        describe: "The body of the note you want to add",
+        demand : true,
+        alias : "b"
+    }
+})
+.help()
+.argv;
 var command = process.argv[2];
 
+showNote = (Note) => {
+    debugger;
+    console.log("---");
+    console.log ("Note Title: "+note.title);
+    console.log(note.body);
+}
 
 if(command === 'read')
 {
-    notes.readFile(argv.title);
+    var note = notes.readFile(argv.title);
+    if(!note){
+        console.log("error");
+    }else
+        showNote(note);
 }else if(command === 'list')
 {
     notes.getAll();
@@ -29,8 +53,7 @@ else if(command === 'add')
    {
        console.log("error");
    }else{
-       console.log("Note Title: "+note.title);
-       console.log("Note body: "+note.body);
+       showNote(note);
    }
 } else
 {

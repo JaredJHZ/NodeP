@@ -42,9 +42,9 @@ addNote = (title,body) =>{
 };
 
 getAll = ()=>{
-    console.log('Listing all notes');
     var allNotes = JSON.parse(fs.readFileSync('notes.JSON'));
     var i = 1;
+    console.log("Listing all "+allNotes.length+" notes");
     allNotes.forEach(element => {
         console.log('Nota:'+i);
         i++;
@@ -57,11 +57,15 @@ getAll = ()=>{
 
 readFile = (title) =>{
     var note = JSON.parse(fs.readFileSync("notes.JSON"));
+    var rNote;
     note.forEach(element => {
         if(element.title === title.toUpperCase()){
-            console.log(element.title+":"+element.body)
+            rNote = element;
         }
     });
+    if(rNote){
+        return rNote;
+    }   
 }
 
 removeFile = (title) =>{
